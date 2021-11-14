@@ -3,8 +3,9 @@
     <h1>Topページ</h1>
     <button @click="spotifyLogin">認証</button>
     <button @click="getHistory">取得テスト用</button>
-    <ul v-for="(value, index) in History" key="index">
+    <ul v-for="(value, index) in History">
       <li>{{value.played_at}}</li>
+      <li>{{value.track.duration_ms}}</li>
     </ul>
 
   </div>
