@@ -8,6 +8,7 @@
     <ul v-for="(value, index) in History">
       <li>{{value.played_at}}</li>
       <li>{{value.track.duration_ms}}</li>
+      <li>{{ConvertJST(value.played_at)}}</li>
     </ul>
 
   </div>
@@ -15,6 +16,9 @@
 
 <script>
 import axios from 'axios'
+// import moment from 'moment'
+import * as moment from 'moment-timezone'
+moment.tz.setDefault('Asia/Tokyo')
 
 export default {
   data: function() {
@@ -73,6 +77,9 @@ export default {
           console.log(this.History[i].track.duration_ms)
           this.TotalPlayingTime += this.History[i].track.duration_ms
       }
+    },
+    ConvertJST: function(date){
+      return moment(date).tz("Asia/Tokyo").format()
     }
   }
 }
