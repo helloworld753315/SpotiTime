@@ -3,6 +3,8 @@
     <h1>Topページ</h1>
     <button @click="spotifyLogin">認証</button>
     <button @click="getHistory">取得テスト用</button>
+    <button @click="getPlayingTime">表示テスト用</button>
+    <p>合計再生時間: {{TotalPlayingTime}}</p>
     <ul v-for="(value, index) in History">
       <li>{{value.played_at}}</li>
       <li>{{value.track.duration_ms}}</li>
@@ -17,11 +19,18 @@ import axios from 'axios'
 export default {
   data: function() {
     return {
-      History: null
+      History: null,
+      TotalPlayingTime: null
     }
   },
   props: {
     routeParams: Object
+  },
+  computed: {
+      get_sum_playtime: function (History) {
+        console.log(History)
+        return History
+      }
   },
   created: function() {
     if (this.$route.hash) {
@@ -57,6 +66,13 @@ export default {
       .catch(err => {
         console.error(err)
       })
+    },
+    getPlayingTime: function(){
+      console.log(this.History.length)
+      for (var i = 0, len = this.History.length; i < len; i++) {
+          console.log(this.History[i].track.duration_ms)
+          this.TotalPlayingTime += this.History[i].track.duration_ms
+      }
     }
   }
 }
