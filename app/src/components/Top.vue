@@ -6,9 +6,9 @@
     <button @click="getPlayingTime">表示テスト用</button>
     <p>合計再生時間: {{TotalPlayingTime}}</p>
     <ul v-for="(value, index) in History">
-      <li>{{value.played_at}}</li>
-      <li>{{value.track.duration_ms}}</li>
       <li>{{ConvertJST(value.played_at)}}</li>
+      <li>{{DateDecision(value.played_at)}}</li>
+      <li>{{value.track.duration_ms}}</li>
     </ul>
 
   </div>
@@ -80,7 +80,19 @@ export default {
     },
     ConvertJST: function(date){
       return moment(date).tz("Asia/Tokyo").format()
+    },
+    DateDecision:function(date){
+      const dateFrom = date.split('T')[0]
+      console.log(dateFrom)
+      const dateTo = new Date(Date.now()).toISOString().split('T')[0]
+      if(dateFrom === dateTo){
+        return true
+      }
+      else{
+        return false
+      }
     }
+    
   }
 }
 </script>
