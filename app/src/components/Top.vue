@@ -6,7 +6,7 @@
     <p>合計再生時間: {{MsecondsTominuts(TotalPlayingTime)}}</p>
     <ul v-for="(value, index) in History">
       <li>{{ConvertJST(value.played_at)}}</li>
-      <li>{{value.track.duration_ms}}</li>
+      <li>{{value.track.name}}</li>
     </ul>
   </div>
 </template>
@@ -104,3 +104,4 @@ export default {
   }
 }
 </script>
+
