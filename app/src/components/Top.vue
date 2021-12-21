@@ -1,26 +1,37 @@
 <template>
   <div class="container">
-    <h1>Topページ</h1>
-    <button @click="spotifyLogin">認証</button>
+    <h1>SpotiTime</h1>
+    <button @click="spotifyLogin" class="button">認証</button>
     <button @click="getHistory">取得テスト用</button>
-    <ul v-for="(value, index) in History" key="index">
-      <li>{{value.played_at}}</li>
+    <p>合計再生時間: {{MsecondsTominuts(TotalPlayingTime)}} 分</p>
+    <ul v-for="(value, index) in History">
+      <li>{{ConvertJST(value.played_at)}}</li>
+      <li>{{value.track.artists[0].name}} / {{value.track.name}}</li>
     </ul>
-
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+// import moment from 'moment'
+import * as moment from 'moment-timezone'
+moment.tz.setDefault('Asia/Tokyo')
 
 export default {
   data: function() {
     return {
-      History: null
+      History: [],
+      TotalPlayingTime: 0
     }
   },
   props: {
     routeParams: Object
+  },
+  computed: {
+      get_sum_playtime: function (History) {
+        console.log(History)
+        return History
+      }
   },
   created: function() {
     if (this.$route.hash) {
@@ -41,6 +52,7 @@ export default {
         '&scope=' + scope
     },
     getHistory: function() {
+      let vm = this
       let endpoint = 'https://api.spotify.com/v1/me/player/recently-played'
       let data = {
         headers: {
@@ -52,11 +64,50 @@ export default {
       .get(endpoint, data)
       .then(res => {
         this.History = res.data.items
+        this.getPlayingTime()
       })
       .catch(err => {
         console.error(err)
       })
+    },
+    DateDecision:function(date){
+      const dateFrom = date.split('T')[0]
+      const dateTo = new Date(Date.now()).toISOString().split('T')[0]
+      if(dateFrom === dateTo){
+        return true
+      }
+      else{
+        return false
+      }
+    }, 
+    getPlayingTime: function(){
+      console.log("test")
+      for (var i = 0, len = this.History.length; i < len; i++) {
+        const playing_time = this.History[i].track.duration_ms
+        const playing_date = this.History[i].played_at
+        if(this.DateDecision(playing_date)){
+          this.TotalPlayingTime += playing_time
+        }
+      }
+    },
+    ConvertJST: function(date){
+      return moment(date).tz("Asia/Tokyo").format()
+    },
+    MsecondsTominuts(value){
+      const result = Math.round((value / 1000 / 60) * 10) / 10
+      return result
+    },
+    returnTime: function(){
+      this.getHistory()
+      this.getPlayingTime()
     }
   }
 }
 </script>
+
+<style coped>
+.button {
+  background-color: rgb(228, 228, 228);
+}
+</style>
+
