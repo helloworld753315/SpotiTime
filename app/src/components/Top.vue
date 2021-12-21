@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <h1>SpotiTime</h1>
-    <button @click="spotifyLogin">認証</button>
+    <button @click="spotifyLogin" class="button">認証</button>
     <button @click="getHistory">取得テスト用</button>
-    <p>合計再生時間: {{MsecondsTominuts(TotalPlayingTime)}}</p>
+    <p>合計再生時間: {{MsecondsTominuts(TotalPlayingTime)}} 分</p>
     <ul v-for="(value, index) in History">
       <li>{{ConvertJST(value.played_at)}}</li>
-      <li>{{value.track.name}}</li>
+      <li>{{value.track.artists[0].name}} / {{value.track.name}}</li>
     </ul>
   </div>
 </template>
@@ -104,4 +104,10 @@ export default {
   }
 }
 </script>
+
+<style coped>
+.button {
+  background-color: rgb(228, 228, 228);
+}
+</style>
 
