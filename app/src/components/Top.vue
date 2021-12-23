@@ -43,7 +43,8 @@ export default {
       let endpoint = 'https://accounts.spotify.com/authorize'
       let response_type = 'token'
       let client_id = 'bf090ae6942646348366507a7d6959bc'
-      let redirect_uri = 'http://0.0.0.0:9000'
+      // let redirect_uri = 'http://0.0.0.0:9000'
+      let redirect_uri = 'https://spotitime.netlify.app'
       let scope = 'user-read-recently-played'
       location.href = endpoint +
         '?response_type=' + response_type +
