@@ -27,17 +27,11 @@ export default {
   data: function() {
     return {
       History: [],
-      TotalPlayingTime: 0
+      TotalPlayingTime: 0,
     }
   },
   props: {
     routeParams: Object
-  },
-  computed: {
-      get_sum_playtime: function (History) {
-        console.log(History)
-        return History
-      }
   },
   created: function() {
     if (this.$route.hash) {
